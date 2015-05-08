@@ -1,0 +1,48 @@
+{
+    "name": "nfreear/cloudsight-http-client",
+    "description": "HTTP client for CloudSight's image recognition API. (Not endorsed by CloudSight.)",
+    "type": "library",
+    "time": "2015-05-04",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "homepage": "http://cloudsight.readme.io",
+    "keywords": [ "image", "ocr", "search" ],
+    "authors": [
+        {
+            "name": "Nick Freear (@nfreear)"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/nfreear/cloudsight-http-client"
+    },
+    "require": {
+        "php": ">=5.3.2",
+        "net/http": "1.1.*"
+    },
+    "require-dev": {
+        "silex/silex": "1.2.*",
+        "squizlabs/php_codesniffer": "~2.1.0",
+        "jakub-onderka/php-parallel-lint": "~0.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nfreear\\Cloudsight\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "Nfreear\\Cloudsight\\Cloudsight_Http_Client"
+    },
+    "scripts": {
+        "example": [
+            "echo Open 'http://localhost:8000/cs.html' in your browser.",
+            "echo Press control + C to quit...",
+            "cd ./example/; php -S localhost:8000 app.php"
+        ],
+        "ps": "ps -ef | egrep '\\d php -S'",
+        "test": [
+            "composer validate --no-interaction",
+            "parallel-lint src",
+            "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/*"
+        ]
+    }
+}

@@ -1,0 +1,81 @@
+<!doctype html> <title> *CloudSight test </title>
+
+<style> body { font: 1em sans-serif; margin: 1em 3em; }
+input { font-size: 1em; } #url { width: 35em; } </style>
+
+<h1> CloudSight test </h1>
+
+<form>
+
+<p><label>Image URL <input id=url name=image_url type=url value=
+ "https://pbs.twimg.com/media/CEB2vgjUEAEfOB6.png" /></label>
+
+<input type=submit />
+</form>
+
+<p id="status"> Ready... </p>
+
+<p id="image"><img /></p>
+
+
+
+<script data-src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(function () {
+
+  var req_url = "/api/image_requests?image_url=%s"
+    , resp_url = "/api/image_responses/%s/%c"
+    , $url = $("#url")
+    , $status = $("#status")
+    , $image = $("#image img")
+    , $form = $("form");
+
+
+  $form.on("submit", function (ev) {
+    var image_url = $url.val();
+
+    ev.preventDefault();
+
+    $image.attr("src", image_url);
+    $status.html("Loading...");
+
+    $form.prop("disabled", true);
+
+    var jqx_req = $.getJSON(req_url.replace("%s", image_url))
+    .done(function (data, textStatus, jqXHR) {
+
+      var token = data.token
+        , count = 0
+        , timer = setInterval(function () {
+
+        var jqx_resp = $.getJSON(resp_url.replace("%s", token).replace("%c", count))
+        .done(function (data, textStatus, jqXHR) {
+          if ("not completed" !== data.status) {
+            clearInterval(timer);
+          }
+          if ("completed" === data.status) {
+            $image.attr("alt", data.name);
+
+            $status.html("Success!  ALT = '" + data.name + "'");
+            console.log("Success!", $image);
+          }
+          console.log("RESP", count, data);
+          count++;
+        });
+
+      }, 1300);
+
+      console.log("REQ", data, textStatus, jqXHR);
+    });
+
+    console.log("Submit: ", image_url);
+  });
+
+
+  var image_url = $url.val();
+  
+  $image.attr("src", image_url);
+
+});
+</script>
