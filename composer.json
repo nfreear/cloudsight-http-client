@@ -3,10 +3,10 @@
     "description": "HTTP client for CloudSight's image recognition API. (Not endorsed by CloudSight.)",
     "type": "library",
     "time": "2015-05-04",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "dev",
     "homepage": "http://cloudsight.readme.io",
-    "keywords": [ "image", "ocr", "search" ],
+    "keywords": [ "picture", "vision", "OCR", "search" ],
     "authors": [
         {
             "name": "Nick Freear (@nfreear)"
@@ -34,6 +34,7 @@
     },
     "scripts": {
         "example": [
+            "echo Starting PHP server.; # php -v",
             "echo Open 'http://localhost:8000/cs.html' in your browser.",
             "echo Press control + C to quit...",
             "cd ./example/; php -S localhost:8000 app.php"

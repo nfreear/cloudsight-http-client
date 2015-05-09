@@ -12,32 +12,29 @@
  */
 namespace Nfreear\Cloudsight;
 
-define('CS_API_KEY_ENV', 'CLOUDSIGHT_API_KEY');
-
-
 class Cloudsight_Http_Client extends \Net_Http_Client
 {
+    private $api_key;
+    protected $mock;
 
     const BASE = 'https://api.cloudsightapi.com/';
 
-    public function __construct()
+    public function __construct($api_key = null, $mock = null)
     {
         parent::__construct();
-        $this->setHeader('Authorization', 'CloudSight '. getenv(CS_API_KEY_ENV));
+
+        $this->api_key = $api_key;
+        $this->mock = (bool)$mock;
+
+        $this->setHeader('Authorization', 'CloudSight '. $this->api_key);
         $this->setHeader('Accept', 'application/json');
-        $this->setUserAgent('Nicks-test-1/PHP; nfreear+@y+ahoo.co.uk');
     }
 
     public function post_image_requests($post_data)
     {
         if ($this->is_mock()) {
-            return array(
-            'mock' => true,
-            'url' => "//images.cloudsightapi.com/uploads/image_request/__/Image.jpg",
-            'token' => 'Mock_AJKAWHKGLjqMd9KDNIXQfg',
-            );
+            return $this->mock_image_requests();
         }
-        #$this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
         $this->setHeader('Content-Type', 'multipart/form-data');
         $this->post(self::BASE . 'image_requests', $post_data);
         return $this->parse_json();
@@ -57,14 +54,23 @@ class Cloudsight_Http_Client extends \Net_Http_Client
         if ($this->is_mock()) {
             return;
         }
-        header('X-cs-api-key: ' . json_encode(getenv(CS_API_KEY_ENV)));
+        header('X-cs-api-key: ' . json_encode($this->api_key));
         header('X-cs-headers: '. json_encode($this->getHeaders()));
         header('X-cs-info: '. json_encode($this->getInfo()));
     }
 
-    public function parse_json()
+    protected function parse_json()
     {
         return 200 == $this->getStatus() ? json_decode($this->getBody()) : null;
+    }
+
+    public function post_data($data)
+    {
+        $result = array();
+        foreach ($data as $key => $value) {
+            $result[ \sprintf('image_request[%s]', $key) ] = $value;
+        }
+        return $result;
     }
 
     public function getStatus()
@@ -72,9 +78,20 @@ class Cloudsight_Http_Client extends \Net_Http_Client
         return $this->is_mock() ? 200 : parent::getStatus();
     }
 
+
+    // ==================================================
+
     protected function is_mock()
     {
-        return CS_MOCK;
+        return $this->mock;
+    }
+
+    protected function mock_image_requests() {
+        return array(
+            'mock' => true,
+            'url' => "//images.cloudsightapi.com/uploads/image_request/__/Image.jpg",
+            'token' => 'Mock_AJKAWHKGLjqMd9KDNIXQfg',
+        );
     }
 
     protected function mock_image_responses($count)

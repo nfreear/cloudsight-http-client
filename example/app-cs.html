@@ -19,21 +19,23 @@ input { font-size: 1em; } #url { width: 35em; } </style>
 
 
 
-<script data-src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
+<script src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(function () {
 
-  var req_url = "/api/image_requests?image_url=%s"
-    , resp_url = "/api/image_responses/%s/%c"
+  var req_url = "/api/image_requests?image_url=${u}&mock=${m}"
+    , resp_url = "/api/image_responses/${t}/${c}?mock=${m}"
     , $url = $("#url")
     , $status = $("#status")
     , $image = $("#image img")
-    , $form = $("form");
+    , $form = $("form")
+    , tpl = _.template;
 
 
   $form.on("submit", function (ev) {
-    var image_url = $url.val();
+    var image_url = $url.val()
+      , mock = 1;
 
     ev.preventDefault();
 
@@ -42,14 +44,14 @@ $(function () {
 
     $form.prop("disabled", true);
 
-    var jqx_req = $.getJSON(req_url.replace("%s", image_url))
+    var jqx_req = $.getJSON(tpl(req_url, { u: image_url, m: mock }))
     .done(function (data, textStatus, jqXHR) {
 
       var token = data.token
         , count = 0
         , timer = setInterval(function () {
 
-        var jqx_resp = $.getJSON(resp_url.replace("%s", token).replace("%c", count))
+        var jqx_resp = $.getJSON(tpl(resp_url, { t: token, c: count, m: mock }))
         .done(function (data, textStatus, jqXHR) {
           if ("not completed" !== data.status) {
             clearInterval(timer);
