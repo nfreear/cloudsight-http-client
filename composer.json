@@ -35,12 +35,14 @@
     },
     "scripts": {
         "example": [
-            "echo Starting PHP server.; # php -v",
+            "echo Starting PHP web server.; # php -v",
             "echo Open 'http://localhost:8000/cs.html' in your browser.",
             "echo Press control + C to quit...",
             "cd ./example/; php -S localhost:8000 app.php"
         ],
         "ps": "ps -ef | egrep '\\d php -S'",
+        "post-install-cmd": "cp -n example/.env-example example/.env",
+        "post-update--cmd": "cp -n example/.env-example example/.env",
         "test": [
             "composer validate --no-interaction",
             "parallel-lint src",

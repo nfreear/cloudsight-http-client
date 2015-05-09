@@ -16,5 +16,6 @@ if (getenv('CS_DEBUG')) {
     ini_set('display_errors', 0);
 }
 date_default_timezone_set('UTC');
+define('CS_JSON', 'application/json; charset=utf-8');
 
 # End.

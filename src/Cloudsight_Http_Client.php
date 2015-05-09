@@ -82,10 +82,11 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      */
     public function debug_headers()
     {
+        header('X-cs-api-key: '. json_encode($this->cs_api_key));
+        header('X-cs-input: '. json_encode($this->cs_input));
         if ($this->is_mock()) {
             return;
         }
-        header('X-cs-api-key: '. json_encode($this->api_key));
         header('X-cs-headers: '. json_encode($this->getHeaders()));
         header('X-cs-info: '. json_encode($this->getInfo()));
     }
@@ -95,7 +96,7 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      * @param array or string
      * @return array
      */
-    public function post_data($data)
+    protected function post_data($data)
     {
         if (is_string($data)) {
             $data = array(
@@ -103,7 +104,6 @@ class Cloudsight_Http_Client extends \Net_Http_Client
                 'locale' => 'en-US',
             );
         }
-
         $result = array();
         foreach ($data as $key => $value) {
             $result[ \sprintf('image_request[%s]', $key) ] = $value;

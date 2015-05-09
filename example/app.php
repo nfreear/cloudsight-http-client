@@ -7,10 +7,10 @@ php-options:
     - "-S"
     - "localhost:8000"
     - "-d"
-    - "date.timezone=\"Europe/London\""
+    - "date.timezone=UTC"
 CONFIG;
 /**
- * Silex-based server to test the Cloudsight API.
+ * Example Silex-based web server to test the Cloudsight API.
  *
  * @author Nick Freear, 2 May 2015.
  * @copyright 2015 Nick Freear.
@@ -18,26 +18,17 @@ CONFIG;
  * @link  https://gist.github.com/nfreear/ac98e809b574948a47ab
  * @link  https://twitter.com/alt_text_bot/status/594605860388757504
  * @link  https://twitter.com/dartshipping/status/594605713298620416
- * @link  https://pbs.twimg.com/media/CEB2vgjUEAEfOB6.png
  *
  *  ~/.bashrc
  *  export COMPOSER_PROCESS_TIMEOUT=600
  */
-require_once '../vendor/autoload.php';
-
-
-define( 'CS_API_KEY_ENV', 'CLOUDSIGHT_API_KEY' );
-define( 'CS_JSON', 'application/json; charset=utf-8' );
-
-date_default_timezone_set( 'Europe/London' );
-
+require_once __DIR__ . '/env.php';
 
 use Nfreear\Cloudsight\Cloudsight_Http_Client;
-use Symfony\Component\HttpFoundation\Request;
 
 
 $app = new Silex\Application();
-$app[ 'debug' ] = true;
+$app[ 'debug' ] = getenv('CS_DEBUG');
 
 
 /** Sanity check.
@@ -70,10 +61,10 @@ $app->get('/files/{path}', function ($path) use ($app) {
  */
 $app->get('/api/image_requests', function (Request $request) use ($app) {
 
-    $api_key = getenv( CS_API_KEY_ENV );
+    $api_key = getenv('CS_API_KEY');
     $query = $request->query;
 
-    $is_mock = $request->get( 'mock', true );
+    //$is_mock = $request->get( 'mock', true );
     $image_url = $query->get( 'image_url' );
 
     if (!$api_key) {
@@ -85,17 +76,13 @@ $app->get('/api/image_requests', function (Request $request) use ($app) {
         return $app->json( $error, 400, array( 'Content-Type' => CS_JSON ));
     }
 
-    $client = new Cloudsight_Http_Client( $api_key, $is_mock );
+    $client = new Cloudsight_Http_Client($api_key, getenv('CS_MOCK'));
 
-    $post_data = $client->post_data(array(
+    $post_data = array(
       'remote_image_url' => $image_url,
       'locale' => $query->get( 'locale', 'en-US' ),
       'language' => $query->get( 'language', 'en' ),
-    ));
-
-    if ($app[ 'debug' ]) {
-      header( 'X-cs-post-data: '. json_encode( $post_data ));
-    }
+    );
 
     $resp = $client->post_image_requests( $post_data );
 
@@ -113,16 +100,15 @@ $app->get('/api/image_requests', function (Request $request) use ($app) {
  */
 $app->get('/api/image_responses/{token}/{count}', function ($token, $count = 0, Request $request) use ($app) {
 
-    $api_key = getenv( CS_API_KEY_ENV );
-    $is_mock = $request->get( 'mock', true );
+    $api_key = getenv('CS_API_KEY');
+    //$is_mock = $request->get( 'mock', true );
 
-    $client = new Cloudsight_Http_Client( $api_key, $is_mock );
+    $client = new Cloudsight_Http_Client( $api_key, getenv('CS_MOCK'));
     $resp = $client->get_image_responses( $token, $count );
 
     return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
 });
 
 $app->run();
-
 
 #End.
