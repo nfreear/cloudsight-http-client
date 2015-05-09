@@ -34,11 +34,12 @@
         "class": "Nfreear\\Cloudsight\\Cloudsight_Http_Client"
     },
     "scripts": {
-        "example": [
+        "example": "php example/cli.php",
+        "web": [
             "echo Starting PHP web server.; # php -v",
             "echo Open 'http://localhost:8000/cs.html' in your browser.",
             "echo Press control + C to quit...",
-            "cd ./example/; php -S localhost:8000 app.php"
+            "cd ./example/; php -S localhost:8000 web.php"
         ],
         "ps": "ps -ef | egrep '\\d php -S'",
         "post-install-cmd": "cp -n example/.env-example example/.env",

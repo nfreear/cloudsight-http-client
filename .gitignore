@@ -4,4 +4,5 @@ composer.lock
 /vendor
 .DS_Store
 *copy*
-
+*BAK*
+*.diff
