@@ -10,7 +10,7 @@ php-options:
     - "date.timezone=\"Europe/London\""
 CONFIG;
 /**
- * Cloudsight API test
+ * Silex-based server to test the Cloudsight API.
  *
  * @author Nick Freear, 2 May 2015.
  * @copyright 2015 Nick Freear.
@@ -39,13 +39,18 @@ use Symfony\Component\HttpFoundation\Request;
 $app = new Silex\Application();
 $app[ 'debug' ] = true;
 
+
+/** Sanity check.
+ */
 $app->get('/hello/{name}', function ($name) use ($app) {
     return 'Hello ' . $app->escape($name) .' - '. date( 'H:m:i' );
 });
+
+/** HTML test page 'cs.html'
+ *
+ * @return object HTML response.
+ */
 $app->get('/cs{any}', function () use ($app) {
-    if (!file_exists( __DIR__ .'/app-cs.html' )) {
-        $app->abort( 404 );
-    }
     return $app->sendFile( __DIR__ .'/app-cs.html' );
 });
 $app->get('/files/{path}', function ($path) use ($app) {
@@ -58,6 +63,11 @@ $app->get('/files/{path}', function ($path) use ($app) {
     return $app->sendFile( __DIR__ .'/'. $path );
 });
 
+
+/** Use the image request endpoint to start the transaction.
+ *
+ * @return JsonResponse JSON, including a `token`.
+ */
 $app->get('/api/image_requests', function (Request $request) use ($app) {
 
     $api_key = getenv( CS_API_KEY_ENV );
@@ -95,6 +105,12 @@ $app->get('/api/image_requests', function (Request $request) use ($app) {
 
     return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
 });
+
+
+/** Poll the image response endpoint.
+ *
+ * @return JsonResponse JSON including the `status` ("not completed", "completed"...)
+ */
 $app->get('/api/image_responses/{token}/{count}', function ($token, $count = 0, Request $request) use ($app) {
 
     $api_key = getenv( CS_API_KEY_ENV );
