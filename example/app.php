@@ -25,6 +25,7 @@ CONFIG;
 require_once __DIR__ . '/env.php';
 
 use Nfreear\Cloudsight\Cloudsight_Http_Client;
+use Symfony\Component\HttpFoundation\Request;
 
 
 $app = new Silex\Application();
@@ -84,10 +85,10 @@ $app->get('/api/image_requests', function (Request $request) use ($app) {
       'language' => $query->get( 'language', 'en' ),
     );
 
-    $resp = $client->post_image_requests( $post_data );
+    $resp = $client->postImageRequests( $post_data );
 
     if ($app[ 'debug' ]) {
-      $client->debug_headers();
+      $client->debugHeaders();
     }
 
     return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
@@ -104,7 +105,7 @@ $app->get('/api/image_responses/{token}/{count}', function ($token, $count = 0, 
     //$is_mock = $request->get( 'mock', true );
 
     $client = new Cloudsight_Http_Client( $api_key, getenv('CS_MOCK'));
-    $resp = $client->get_image_responses( $token, $count );
+    $resp = $client->getImageResponses( $token, $count );
 
     return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
 });

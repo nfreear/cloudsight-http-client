@@ -24,16 +24,16 @@ use Nfreear\Cloudsight\Cloudsight_Http_Client;
 
 $client = new CloudSight_Http_Client($api_key);
 
-$request = $client->post_image_requests($image_url);
+$request = $client->postImageRequests($image_url);
 
 while (1) {
 
     sleep(1);
 
-    $result = $client->get_image_responses($request->token);
+    $result = $client->getImageResponses($request->token);
 
     // Check if analysis is complete.
-    if ($client->is_complete()) {
+    if ($client->isComplete()) {
         break;
     }
 }
@@ -53,7 +53,7 @@ _NOTE: this library is NOT endorsed by CloudSight._
 [github]: https://github.com/nfreear/cloudsight-http-client
 [Packagist]: https://packagist.org/packages/nfreear/cloudsight-http-client
 [packagist-icon]: https://img.shields.io/packagist/v/nfreear/cloudsight-http-client.svg?style=flat
-[license-icon]: https://img.shields.io/packagist/l/wikimedia/composer-merge-plugin.svg?style=flat
+[license-icon]: https://img.shields.io/packagist/l/nfreear/cloudsight-http-client.svg?style=flat
 [MIT]: http://nfreear.mit-license.org/
 [CloudSight]: https://cloudsightapi.com/
 [CloudSight documentation]: http://cloudsight.readme.io/v1.0/docs

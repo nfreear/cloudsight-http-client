@@ -12,10 +12,10 @@ use Nfreear\Cloudsight\Cloudsight_Http_Client;
 $client = new CloudSight_Http_Client(getenv('CS_API_KEY'), getenv('CS_MOCK'));
 
 // Call once.
-$request = $client->post_image_requests(getenv('EXAMPLE_IMAGE_URL'));
+$request = $client->postImageRequests(getenv('EXAMPLE_IMAGE_URL'));
 
 if (getenv('CS_DEBUG')) {
-    var_dump($client->get_post_data(), $request);
+    var_dump($client->getPostData(), $request);
 }
 
 $count  = 0;
@@ -24,12 +24,12 @@ while (1) {
     sleep( 1 );
 
     // Poll the API, with the token.
-    $result = $client->get_image_responses($request->token, $count);
+    $result = $client->getImageResponses($request->token, $count);
 
     echo "$count. Status: " . $result->status . PHP_EOL;
 
     // Check if image analysis is complete.
-    if ($client->is_complete()) {
+    if ($client->isComplete()) {
         break;
     }
     $count++;

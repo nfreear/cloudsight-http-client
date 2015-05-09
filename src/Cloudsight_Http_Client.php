@@ -15,7 +15,7 @@ namespace Nfreear\Cloudsight;
 
 class Cloudsight_Http_Client extends \Net_Http_Client
 {
-    private   $cs_api_key;
+    private $cs_api_key;
     protected $cs_is_mock;
     protected $cs_input;
     protected $cs_is_complete = false;
@@ -39,16 +39,16 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      * @param  string or array
      * @return object Object including the `token`
      */
-    public function post_image_requests($post_data_or_url)
+    public function postImageRequests($post_data_or_url)
     {
-        $this->cs_input = $this->post_data($post_data_or_url);
+        $this->cs_input = $this->csPostData($post_data_or_url);
 
-        if ($this->is_mock()) {
-            return $this->mock_image_requests();
+        if ($this->isMock()) {
+            return $this->mockImageRequests();
         }
         $this->setHeader('Content-Type', 'multipart/form-data');
         $this->post(self::BASE . 'image_requests', $this->cs_input);
-        return $this->parse_json();
+        return $this->csParseJson();
     }
 
     /** Poll me multiple times, until I return 'completed' or an error.
@@ -57,13 +57,13 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      * @param  int $mock_count Optional counter for mock requests.
      * @return object Object
      */
-    public function get_image_responses($token, $mock_count = 0)
+    public function getImageResponses($token, $mock_count = 0)
     {
-        if ($this->is_mock()) {
-            $result = $this->mock_image_responses($mock_count);
+        if ($this->isMock()) {
+            $result = $this->mockImageResponses($mock_count);
         } else {
             $this->get(sprintf(self::BASE . 'image_responses/%s', $token));
-            $result = $this->parse_json();
+            $result = $this->csParseJson();
         }
         $this->cs_is_complete = ('not completed' !== $result->status);
         return $result;
@@ -73,18 +73,19 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      *
      * @return bool
      */
-    public function is_complete() {
+    public function isComplete()
+    {
         return $this->cs_is_complete;
     }
 
     /** Convenience method to show raw data from cURL.
      *  CAUTION: exposes your API key - don't use in production!
      */
-    public function debug_headers()
+    public function debugHeaders()
     {
         header('X-cs-api-key: '. json_encode($this->cs_api_key));
         header('X-cs-input: '. json_encode($this->cs_input));
-        if ($this->is_mock()) {
+        if ($this->isMock()) {
             return;
         }
         header('X-cs-headers: '. json_encode($this->getHeaders()));
@@ -96,7 +97,7 @@ class Cloudsight_Http_Client extends \Net_Http_Client
      * @param array or string
      * @return array
      */
-    protected function post_data($data)
+    protected function csPostData($data)
     {
         if (is_string($data)) {
             $data = array(
@@ -111,7 +112,8 @@ class Cloudsight_Http_Client extends \Net_Http_Client
         return $result;
     }
 
-    public function get_post_data() {
+    public function getPostData()
+    {
         return (object) $this->cs_input;
     }
 
@@ -119,23 +121,24 @@ class Cloudsight_Http_Client extends \Net_Http_Client
     */
     public function getStatus()
     {
-        return $this->is_mock() ? 200 : parent::getStatus();
+        return $this->isMock() ? 200 : parent::getStatus();
     }
 
 
     // ==================================================
 
-    protected function parse_json()
+    protected function csParseJson()
     {
         return 200 == $this->getStatus() ? (object) json_decode($this->getBody()) : null;
     }
 
-    protected function is_mock()
+    protected function isMock()
     {
         return $this->cs_is_mock;
     }
 
-    protected function mock_image_requests() {
+    protected function mockImageRequests()
+    {
         return (object) array(
             'mock' => true,
             'url' => "//images.cloudsightapi.com/uploads/image_request/__/Image.jpg",
@@ -143,7 +146,7 @@ class Cloudsight_Http_Client extends \Net_Http_Client
         );
     }
 
-    protected function mock_image_responses($count)
+    protected function mockImageResponses($count)
     {
         $count = intval($count);
         $rand = mt_rand(2, 7);
