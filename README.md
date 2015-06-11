@@ -1,5 +1,6 @@
 [![Latest Stable Version][packagist-icon]][packagist]
 [![MIT License][license-icon]][MIT]
+[![Build status: Travis-CI][travis-icon]][travis-ci]
 
 # cloudsight-http-client
 
@@ -62,6 +63,8 @@ _NOTE: this library is NOT endorsed by CloudSight._
 
 [github]: https://github.com/nfreear/cloudsight-http-client
 [source-icon]: https://img.shields.io/badge/source-nfreear%2Fcloudsight--http--client-blue.svg
+[travis-icon]: https://travis-ci.org/nfreear/cloudsight-http-client.svg
+[travis-ci]: https://travis-ci.org/nfreear/cloudsight-http-client
 [twitter]: https://twitter.com/nfreear
 [author-icon]: https://img.shields.io/badge/author-%40nfreear-blue.svg
 [Packagist]: https://packagist.org/packages/nfreear/cloudsight-http-client
