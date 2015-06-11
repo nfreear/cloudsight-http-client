@@ -42,6 +42,14 @@ echo "Complete. ALT text: " . $result->name;
 ?>
 ```
 
+Try the command line example:
+
+    composer example
+
+And, a web server based example:
+
+    composer web
+
 
 ---
 _NOTE: this library is NOT endorsed by CloudSight._
@@ -49,11 +57,16 @@ _NOTE: this library is NOT endorsed by CloudSight._
 
 © 2015 Nick Freear. License: [MIT][].
 
+[![author: @nfreear on Twitter][author-icon]][twitter]
+
 
 [github]: https://github.com/nfreear/cloudsight-http-client
+[source-icon]: https://img.shields.io/badge/source-nfreear%2Fcloudsight--http--client-blue.svg
+[twitter]: https://twitter.com/nfreear
+[author-icon]: https://img.shields.io/badge/author-%40nfreear-blue.svg
 [Packagist]: https://packagist.org/packages/nfreear/cloudsight-http-client
-[packagist-icon]: https://img.shields.io/packagist/v/nfreear/cloudsight-http-client.svg?style=flat
-[license-icon]: https://img.shields.io/packagist/l/nfreear/cloudsight-http-client.svg?style=flat
+[packagist-icon]: https://img.shields.io/packagist/v/nfreear/cloudsight-http-client.svg
+[license-icon]: https://img.shields.io/packagist/l/nfreear/cloudsight-http-client.svg
 [MIT]: http://nfreear.mit-license.org/
 [CloudSight]: https://cloudsightapi.com/
 [CloudSight documentation]: http://cloudsight.readme.io/v1.0/docs

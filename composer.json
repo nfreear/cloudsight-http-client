@@ -2,11 +2,11 @@
     "name": "nfreear/cloudsight-http-client",
     "description": "HTTP client for CloudSight's image recognition API. (Not endorsed by CloudSight.)",
     "type": "library",
-    "time": "2015-05-04",
+    "time": "2015-05-02",
     "license": "MIT",
     "minimum-stability": "dev",
     "homepage": "http://cloudsight.readme.io",
-    "keywords": [ "picture", "vision", "OCR", "search" ],
+    "keywords": [ "picture", "vision", "recognition", "MachineLearning", "search", "IET-OU" ],
     "authors": [
         {
             "name": "Nick Freear (@nfreear)"
@@ -34,7 +34,10 @@
         "class": "Nfreear\\Cloudsight\\Cloudsight_Http_Client"
     },
     "scripts": {
-        "example": "php example/cli.php",
+        "example": [
+            "echo Command line example...",
+            "php example/cli.php"
+        ],
         "web": [
             "echo Starting PHP web server.; # php -v",
             "echo Open 'http://localhost:8000/cs.html' in your browser.",
@@ -43,11 +46,11 @@
         ],
         "ps": "ps -ef | egrep '\\d php -S'",
         "post-install-cmd": "cp -n example/.env-example example/.env",
-        "post-update--cmd": "cp -n example/.env-example example/.env",
+        "post-update-cmd": "cp -n example/.env-example example/.env",
         "test": [
             "composer validate --no-interaction",
             "parallel-lint src",
-            "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/*"
+            "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/* example/env.php"
         ]
     }
 }

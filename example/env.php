@@ -10,8 +10,10 @@ try {
     \Dotenv::required('CS_API_KEY');
 } catch (Exception $ex) {
     if ('cli' == php_sapi_name()) {
-        fwrite(STDERR, "Warning. Please fix & try again...\n\n> ".
-            $ex->getMessage() . PHP_EOL);
+        fwrite(
+            STDERR,
+            "Warning. Please fix & try again...\n\n> ". $ex->getMessage() .PHP_EOL
+        );
     } else {
         header('HTTP/1.1 500.1');
         header('X-exception: '. $ex->getMessage());
