@@ -27,7 +27,6 @@ require_once __DIR__ . '/env.php';
 use Nfreear\Cloudsight\Cloudsight_Http_Client;
 use Symfony\Component\HttpFoundation\Request;
 
-
 $app = new Silex\Application();
 $app[ 'debug' ] = getenv('CS_DEBUG');
 
@@ -35,7 +34,7 @@ $app[ 'debug' ] = getenv('CS_DEBUG');
 /** Sanity check.
  */
 $app->get('/hello/{name}', function ($name) use ($app) {
-    return 'Hello ' . $app->escape($name) .' - '. date( 'H:m:i' );
+    return 'Hello ' . $app->escape($name) .' - '. date('H:m:i');
 });
 
 /** HTML test page 'cs.html'
@@ -43,16 +42,16 @@ $app->get('/hello/{name}', function ($name) use ($app) {
  * @return object HTML response.
  */
 $app->get('/cs{any}', function () use ($app) {
-    return $app->sendFile( __DIR__ .'/app-cs.html' );
+    return $app->sendFile(__DIR__ .'/app-cs.html');
 });
 $app->get('/files/{path}', function ($path) use ($app) {
-    if (!file_exists( __DIR__ .'/'. $path )) {
-        $app->abort( 404 );
+    if (!file_exists(__DIR__ .'/'. $path)) {
+        $app->abort(404);
     }
-    if (!preg_match( '/^[\w\-]+\.(html|js|css|png)$/', $path )) {
-        $app->abort( 403 );  // Security!
+    if (!preg_match('/^[\w\-]+\.(html|js|css|png)$/', $path)) {
+        $app->abort(403);  // Security!
     }
-    return $app->sendFile( __DIR__ .'/'. $path );
+    return $app->sendFile(__DIR__ .'/'. $path);
 });
 
 
@@ -66,32 +65,32 @@ $app->get('/api/image_requests', function (Request $request) use ($app) {
     $query = $request->query;
 
     //$is_mock = $request->get( 'mock', true );
-    $image_url = $query->get( 'image_url' );
+    $image_url = $query->get('image_url');
 
     if (!$api_key) {
         $error = array( 'message' => 'The required env var API_KEY is missing.' );
-        return $app->json( $error, 400 );
+        return $app->json($error, 400);
     }
     if (!$image_url) {
         $error = array( 'message' => 'The required {image_url} parameter is missing.' );
-        return $app->json( $error, 400, array( 'Content-Type' => CS_JSON ));
+        return $app->json($error, 400, array( 'Content-Type' => CS_JSON ));
     }
 
     $client = new Cloudsight_Http_Client($api_key, getenv('CS_MOCK'));
 
     $post_data = array(
       'remote_image_url' => $image_url,
-      'locale' => $query->get( 'locale', 'en-US' ),
-      'language' => $query->get( 'language', 'en' ),
+      'locale' => $query->get('locale', 'en-US'),
+      'language' => $query->get('language', 'en'),
     );
 
-    $resp = $client->postImageRequests( $post_data );
+    $resp = $client->postImageRequests($post_data);
 
     if ($app[ 'debug' ]) {
-      $client->debugHeaders();
+        $client->debugHeaders();
     }
 
-    return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
+    return $app->json($resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
 });
 
 
@@ -104,10 +103,10 @@ $app->get('/api/image_responses/{token}/{count}', function ($token, $count = 0, 
     $api_key = getenv('CS_API_KEY');
     //$is_mock = $request->get( 'mock', true );
 
-    $client = new Cloudsight_Http_Client( $api_key, getenv('CS_MOCK'));
-    $resp = $client->getImageResponses( $token, $count );
+    $client = new Cloudsight_Http_Client($api_key, getenv('CS_MOCK'));
+    $resp = $client->getImageResponses($token, $count);
 
-    return $app->json( $resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
+    return $app->json($resp, $client->getStatus(), array( 'Content-Type' => CS_JSON ));
 });
 
 $app->run();

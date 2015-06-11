@@ -20,8 +20,7 @@ if (getenv('CS_DEBUG')) {
 
 $count  = 0;
 while (1) {
-
-    sleep( 1 );
+    sleep(1);
 
     // Poll the API, with the token.
     $result = $client->getImageResponses($request->token, $count);
