@@ -5,6 +5,7 @@ php:
 before_script:
   - composer self-update
   - composer install --prefer-source --dev
+  - phpcs --version
 
 script:
   - composer test
