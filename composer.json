@@ -50,6 +50,7 @@
         "test": [
             "composer validate --no-interaction",
             "parallel-lint src",
+            "phpcs --version",
             "phpcs --encoding=utf-8 --standard=./phpcs.xml -n --extensions=php example/* src/*"
         ],
         "fix": [
