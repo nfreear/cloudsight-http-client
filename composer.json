@@ -22,8 +22,8 @@
     "require-dev": {
         "vlucas/phpdotenv": "1.1.*@dev",
         "silex/silex": "1.2.*",
-        "squizlabs/php_codesniffer": "~2.1.0",
-        "jakub-onderka/php-parallel-lint": "~0.8"
+        "squizlabs/php_codesniffer": "2.5.1",
+        "jakub-onderka/php-parallel-lint": "^0.9.2"
     },
     "autoload": {
         "psr-4": {
@@ -34,6 +34,7 @@
         "class": "Nfreear\\Cloudsight\\Cloudsight_Http_Client"
     },
     "scripts": {
+        "copy-env": "cp -n example/.env-example example/.env",
         "example": [
             "echo Command line example...",
             "php example/cli.php"
@@ -49,7 +50,7 @@
         "post-update-cmd": "cp -n example/.env-example example/.env",
         "test": [
             "composer validate --no-interaction",
-            "parallel-lint src",
+            "parallel-lint src example",
             "phpcs --version",
             "phpcs --encoding=utf-8 --standard=./phpcs.xml -n --extensions=php example/* src/*"
         ],

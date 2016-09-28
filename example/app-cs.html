@@ -8,7 +8,7 @@ input { font-size: 1em; } #url { width: 35em; } </style>
 <form>
 
 <p><label>Image URL <input id=url name=image_url type=url value=
- "https://pbs.twimg.com/media/CEB2vgjUEAEfOB6.png" /></label>
+ "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/AEG_Logo_Red_RGB.jpg/200px-AEG_Logo_Red_RGB.jpg" /></label>
 
 <input type=submit />
 </form>
@@ -19,8 +19,8 @@ input { font-size: 1em; } #url { width: 35em; } </style>
 
 
 
-<script src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/lodash/4.16.2/lodash.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script>
 $(function () {
 
@@ -76,7 +76,7 @@ $(function () {
 
 
   var image_url = $url.val();
-  
+
   $image.attr("src", image_url);
 
 });

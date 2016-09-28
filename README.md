@@ -4,20 +4,45 @@
 
 # cloudsight-http-client
 
-PHP HTTP client library for the [CloudSight][] API, with mock API functionality.
+PHP HTTP client library for the [CloudSight][] image recognition API, with mock API functionality.
 
 
 ## Installation
 
-Install using [Composer][], via [Packagist][]
+Install using [Composer][], via [Packagist][]. At the commandline / in a terminal, type:
 
 
-    composer require nfreear/cloudsight-http-client:dev-master 
+    composer require nfreear/cloudsight-http-client:dev-master
 
 
 ## Usage
 
-Register with [CloudSight][] to get an API key.
+1. Register with [CloudSight][] to get an API key.
+
+2. At the commandline / in a terminal, type:
+  ```
+  composer copy-env
+  ```
+
+3. Edit the `CS_API_KEY` variable, in the `example/.env` configuration file, using your favourite text editor:
+  ```
+  atom example/.env
+  ```
+
+4. Try the command line example:
+  ```
+  composer example
+  ```
+
+5. And, a web server based example:
+  ```
+  composer web
+  ```
+
+Note: you'll want to set the `CS_MOCK` variable to `false`, to run _live_ demos!
+
+
+## Legacy
 
 ```php
 <?php
@@ -43,20 +68,12 @@ echo "Complete. ALT text: " . $result->name;
 ?>
 ```
 
-Try the command line example:
-
-    composer example
-
-And, a web server based example:
-
-    composer web
-
 
 ---
 _NOTE: this library is NOT endorsed by CloudSight._
 
 
-© 2015 Nick Freear. License: [MIT][].
+© 2016 Nick Freear. License: [MIT][].
 
 [![author: @nfreear on Twitter][author-icon]][twitter]
 
@@ -74,4 +91,3 @@ _NOTE: this library is NOT endorsed by CloudSight._
 [CloudSight]: https://cloudsightapi.com/
 [CloudSight documentation]: http://cloudsight.readme.io/v1.0/docs
 [Composer]: https://getcomposer.org/
-

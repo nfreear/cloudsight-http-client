@@ -15,7 +15,8 @@ $client = new CloudSight_Http_Client(getenv('CS_API_KEY'), getenv('CS_MOCK'));
 $request = $client->postImageRequests(getenv('EXAMPLE_IMAGE_URL'));
 
 if (getenv('CS_DEBUG')) {
-    var_dump($client->getPostData(), $request);
+    print_r($client->getPostData());
+    print_r($request);
 }
 
 $count  = 0;
@@ -35,7 +36,7 @@ while (1) {
 }
 
 if (getenv('CS_DEBUG')) {
-    var_dump($result);
+    print_r($result);
 }
 
 echo "ALT text: " . $result->name . PHP_EOL;
